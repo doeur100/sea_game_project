@@ -24,9 +24,13 @@ class Schedule extends Model
     {
         return $this->belongsTo(Event::class);
     }
-    public function schedule(): HasMany
+    public function competition(): HasMany
     {
-        return $this->hasMany(Schedule::class);
+        return $this->hasMany(Competition::class);
+    }
+    public function ticket(): HasMany
+    {
+        return $this->hasMany(Ticket::class);
     }
     
 }

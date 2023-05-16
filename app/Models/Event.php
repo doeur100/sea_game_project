@@ -19,8 +19,8 @@ class Event extends Model
         $events = self::updateOrCreate(['id' => $id],$events);
         return $events;
     }
-    public function event(): HasMany
+    public function schedule(): HasMany
     {
-        return $this->hasMany(Event::class);
+        return $this->hasMany(Schedule::class);
     }
 }

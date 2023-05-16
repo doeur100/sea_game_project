@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Venue;
 use Illuminate\Http\Request;
 
 class VenueController extends Controller
@@ -11,7 +12,8 @@ class VenueController extends Controller
      */
     public function index()
     {
-        //
+        $venue = Venue::all();
+        return response()->json(['success' =>true, 'data' => $venue],200);
     }
 
     /**
@@ -19,7 +21,11 @@ class VenueController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $venue = Venue::create([
+            'zone'=> request('zone'),
+            'address'=> request('address'),
+        ]);
+        return response()->json(['success' =>true, 'data' => $venue],201);
     }
 
     /**
@@ -27,7 +33,8 @@ class VenueController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $venue = Venue::find($id);
+        return response()->json(['success' =>true, 'data' => $venue],201);
     }
 
     /**
@@ -43,6 +50,7 @@ class VenueController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $venue = Venue::find($id);
+        $venue->delete();
     }
 }

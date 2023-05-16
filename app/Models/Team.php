@@ -12,6 +12,10 @@ class Team extends Model
         'name',
         'country'
     ];
+    public function competition()
+    {
+        return $this->belongsToMany(Competition::class, 'competition_team')->withTimestamps();
+    }
     public static function store($request, $id = null)
     {
         $teams = $request->only(['name','country']);

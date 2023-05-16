@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CompetitiontResource;
 use App\Models\Competition;
 use Illuminate\Http\Request;
 
@@ -13,6 +14,7 @@ class CompetitionController extends Controller
     public function index()
     {
         $competitions = Competition::all();
+        $competitions = CompetitiontResource::collection($competitions);
         return response()->json(['success' =>true, 'data' => $competitions],200);
     }
 
@@ -21,12 +23,8 @@ class CompetitionController extends Controller
      */
     public function store(Request $request)
     {
-        $competions = Competition::create([
-            'time'=> request('time'),
-            'schedule_id'=> request('schedule_id'),
-            'venue_id'=>request('venue_id')
-        ]);
-        return response()->json(['success' =>true, 'data' => $competions],201);
+        $competitions = Competition::store($request);
+        return response()->json(['success' =>true, 'data' => $competitions],201);
     }
 
     /**
@@ -34,7 +32,8 @@ class CompetitionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $competition = Competition::find($id);
+        return response()->json(['success' =>true, 'data' => $competition],201);
     }
 
     /**
@@ -50,6 +49,7 @@ class CompetitionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $competition = Competition::find($id);
+        $competition->delete();
     }
 }

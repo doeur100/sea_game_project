@@ -6,15 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Competition extends Model
+class Ticket extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'time',
+        'user_id',
         'schedule_id',
         'venue_id'
     ];
-   
+    public static function store($request, $id = null)
+    {
+        $ticket = $request->only(['user_id','schedule_id','venue_id']);
+        $ticket = self::updateOrCreate(['id' => $id],$ticket);
+        return $ticket;
+    }
     public function schedule(): BelongsTo
     {
         return $this->belongsTo(Schedule::class);
@@ -23,16 +28,8 @@ class Competition extends Model
     {
         return $this->belongsTo(Venue::class);
     }
-    public function teams()
+    public function user(): BelongsTo
     {
-        return $this->belongsToMany(Team::class, 'competition_team')->withTimestamps();
-    }
-    public static function store($request, $id = null)
-    {
-        $teams = $request->only(['time','schedule_id','venue_id']);
-        $teams = self::updateOrCreate(['id' => $id],$teams);
-        $competition = request('teams');
-        $teams->teams()->sync($competition);
-        return $teams;
+        return $this->belongsTo(User::class);
     }
 }
